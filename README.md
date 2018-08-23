@@ -1,10 +1,31 @@
 # Stacktodo
 
-#### Live Demo
+### Live Demo
 
 [点击这里前往](https://stacktodo.mak1t0.cc/)（HTTPS）
 
 前端服务器由 Hostker 提供；后端服务器由 Google Cloud 提供，速度感人，游玩时请耐心稍候。
+
+### 安装
+
+<del>不推荐，有点麻烦。</del>
+
+#### 检查清单
+
+##### 后端原料
+
+- Python 2.7 w/ pip and vitrualenv
+- Django==1.8
+- djangorestframework==3.3.3
+- psycopg2
+- django-cors-headers
+- PostgreSQL
+
+##### 前端原料
+
+Just `npm i` please.
+
+### 预览 GIF
 
 #### 添加任务
 
