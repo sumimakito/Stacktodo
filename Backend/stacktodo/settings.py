@@ -1,35 +1,26 @@
-# Django settings for stacktodo project.
-
-DEBUG = True
+# coding=utf-8
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-CORS_ORIGIN_WHITELIST = (
-    'stacktodo.mak1t0.cc',
-)
+CORS_ORIGIN_WHITELIST = ('stacktodo.mak1t0.cc',)
 
 CSRF_TRUSTED_ORIGINS = ('stacktodo.mak1t0.cc')
 
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
+ADMINS = ()
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'stacktodo',  # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
+        'NAME': 'stacktodo',
         'USER': 'postgres',
-        'PASSWORD': '111111',  # 111111
-        'HOST': '',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '5433',  # Set to empty string for default.
+        'PASSWORD': '111111',
+        'HOST': '',
+        'PORT': '5433',
     }
 }
 
-# Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     "127.0.0.0",
     "localhost",
@@ -90,17 +81,19 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
+# WHATEVER ¯\_(ツ)_/¯
+# THIS IS JUST A DEMO
+# If YOU REALLY WANT TO PLAY WITH THIS INSTANCE
+# THEN GO FOR IT
+# -- Makito
 SECRET_KEY = 'x5zil7q+%a6o-*b)v$sron5()ifccdr7@@^cp9ma6imtl2sy7f'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,8 +103,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'server.cors.CorsMiddleware'
 )
 
@@ -120,11 +111,7 @@ ROOT_URLCONF = 'stacktodo.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'stacktodo.wsgi.application'
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
+TEMPLATE_DIRS = ()
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -135,11 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
     'server',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -175,11 +158,6 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     ),
-    '''
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAdminUser',
-    ),
-    '''
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
