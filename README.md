@@ -2,6 +2,8 @@
 
 ### Live Demo
 
+*建议使用桌面浏览器访问*
+
 [点击这里前往](https://stacktodo.mak1t0.cc/)（HTTPS）
 
 前端服务器由 Hostker 提供；后端服务器由 Google Cloud 提供，速度感人，游玩时请耐心稍候。
