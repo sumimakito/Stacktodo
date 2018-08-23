@@ -10,18 +10,18 @@
 
 ![添加任务](https://i.imgur.com/hgqhvHK.gif)
 
-####删除任务
+#### 删除任务
 
 ![删除任务](https://i.imgur.com/SNFWQJX.gif)
 
-####更新任务
+#### 更新任务
 
 ![更新任务](https://i.imgur.com/dZNnpt6.gif)
 
-####任务排序
+#### 任务排序
 
 ![任务排序](https://i.imgur.com/sWi0l8u.gif)
 
-####改变状态、筛选、翻页及其他
+#### 改变状态、筛选、翻页及其他
 
 ![改变状态、筛选、翻页及其他](https://i.imgur.com/poDEfB0.gif)
