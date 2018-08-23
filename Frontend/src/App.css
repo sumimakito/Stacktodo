@@ -1,0 +1,357 @@
+/*
+* {
+    font-family: "source-han-serif-sc", serif !important;
+    font-weight: 500;
+}
+*/
+
+* {
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.navbar * {
+    font-weight: bold;
+    font-family: "Montserrat", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+body {
+    background: #f0f0f0;
+    height: 100vh;
+}
+
+#root {
+    height: 100%;
+}
+
+button, .todo-item-shortcut-container * {
+    cursor: hand !important;
+    cursor: pointer !important;
+    outline: none !important;
+}
+
+.clickable, .clickable * {
+    cursor: hand !important;
+    cursor: pointer !important;
+}
+
+textarea {
+    resize: none;
+}
+
+.center {
+    text-align: center;
+}
+
+button.white {
+    background: #fff !important;
+    color: #666 !important;
+    border: 1px solid #ced4da !important;
+}
+
+button.white:hover {
+    background: #ececec !important;
+    color: #333 !important;
+}
+
+.btn-outline-secondary:focus, .btn-outline-secondary.focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.pink-b {
+    background: #F3969A;
+}
+
+.pink-b:hover {
+    background: #d9868a;
+}
+
+.pink-f {
+    color: #F3969A;
+}
+
+.pink-f:hover {
+    color: #d9868a;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #F3969A !important;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+    -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(243, 150, 154, 0.25);
+    box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(243, 150, 154, 0.25);
+}
+
+.input-group-text {
+    background: transparent !important;
+}
+
+.DayPicker {
+    display: block !important;
+}
+
+.DayPicker-Day {
+    border-radius: 3px !important;
+}
+
+.DayPicker-Footer, .DayPicker-Footer * {
+    text-align: center !important;
+    color: #F3969A !important;
+}
+
+.DayPicker-Day--today {
+    color: #F3969A !important;
+}
+
+.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
+    color: #fff !important;
+    background-color: #F3969A !important;
+}
+
+.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+    background-color: rgba(243, 150, 154, 0.25) !important;
+}
+
+.form-control:focus {
+    color: #5a5a5a;
+    background-color: #fff;
+    border-color: #ced4da;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.lp-list-group .list-group-item {
+    background: transparent;
+    color: #666;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 4px;
+}
+
+.lp-list-group .list-group-item:hover {
+    background: #e8e8e8;
+}
+
+.lp-list-group .list-group-item.active {
+    background: #dcdcdc;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.list-group-flush .list-group-item:first-child {
+    border-top: none;
+}
+
+/*
+.list-group-flush .list-group-item:last-child {
+    border-bottom: none;
+}
+*/
+
+.todo-item-today {
+    font-weight: bold;
+    color: #F3969A;
+    border-bottom: 2px solid #F3969A;
+}
+
+.todo-item-completed {
+    opacity: 0.7;
+    text-decoration: line-through;
+}
+
+.nav-patch {
+    padding-top: 56px;
+}
+
+.full-height {
+    height: 100% !important;
+}
+
+.container {
+    max-width: 950px;
+}
+
+.no-horizontal-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.vertical-padding {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.horizontal-padding {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.drawer-item {
+    min-height: 22px;
+    font-size: 14px;
+    color: #333;
+    list-style: none;
+    cursor: pointer;
+    padding: 9px 16px 9px 4px;
+    -webkit-transition: color .1s ease-in, background-color .1s ease-in;
+    transition: color .1s ease-in, background-color .1s ease-in;
+    line-height: 1.25;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.icon-item {
+    width: 24px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    vertical-align: middle;
+    margin-right: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+.checkbox-patch {
+    display: inline !important;
+}
+
+.todo-item-left-container {
+    float: left;
+}
+
+.todo-item-right-container {
+    padding-left: 20px;
+}
+
+.todo-item-shortcut-container {
+    float: right;
+    margin-right: -20px;
+}
+
+.todo-list {
+    padding-right: 20px;
+    padding-left: 1px;
+}
+
+.todo-list-item {
+    padding: .5rem 0;
+}
+
+.input-right-button {
+    margin-left: 10px;
+}
+
+.list-group-item .todo-item-shortcut-container {
+    opacity: 0;
+}
+
+.list-group-item:hover .todo-item-shortcut-container {
+    opacity: 1;
+}
+
+.icon-line-aligning-patch {
+    margin-bottom: 3px;
+}
+
+.icon-line-aligning-patch-sm {
+    margin-bottom: 1px;
+}
+
+.task-input.input-group > .input-group-append:last-child .btn {
+    border-radius: 0 3px 3px 0 !important;
+}
+
+.task-input.input-group > .input-group-append:not(:last-child) .btn {
+    border-radius: 0 !important;
+}
+
+.task-input.input-group > .input-group-prepend:first-child .btn {
+    border-radius: 3px 0 0 3px !important;
+}
+
+.task-input.input-group > .input-group-prepend:not(:first-child) .btn {
+    border-radius: 0 !important;
+}
+
+.task-input .input-group-text {
+    padding: 6px !important;
+}
+
+.task-input textarea {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+}
+
+.form-control {
+    font-size: 13px !important;
+    padding: 6px !important;
+}
+
+.button-wrapper {
+    margin-top: 4px;
+}
+
+.btn-sm {
+    border-radius: 3px !important;
+    font-size: 13px !important;
+    padding: 4px 12px 5px 12px !important;
+}
+
+.clear-margin {
+    margin: 0 !important;
+}
+
+.clear-padding-left {
+    padding-left: 0 !important;
+}
+
+.App {
+    text-align: left;
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
+}
+
+.App-header {
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
+}
+
+.App-title {
+    font-size: 1.5em;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+.App-drawer {
+    overflow: scroll;
+}
+
+.App-todolist {
+    background: #fff;
+    overflow: scroll;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
