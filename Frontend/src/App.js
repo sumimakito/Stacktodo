@@ -40,6 +40,7 @@ import DayPicker from "react-day-picker";
 import 'react-day-picker/lib/style.css';
 import * as clone from "clone";
 import {API_BASE_URL} from "./constants";
+import {BeatLoader, ScaleLoader} from "react-spinners";
 
 class App extends Component {
 
@@ -82,13 +83,15 @@ class App extends Component {
         this.ORDERING_METHOD.UNCOMPLETED_FIRST,
     ];
 
+    axiosHead = 0;
+
     constructor(props) {
         super(props);
-
         this.handleDayClick = this.handleDayClick.bind(this);
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false,
+            loading: false,
             datePickerModalOpen: false,
             priorityPickerModalOpen: false,
             taskEditorModalOpen: false,
@@ -410,8 +413,18 @@ class App extends Component {
     }
 
     refillTodosFromServer(url) {
+        this.setState({
+            loading: true,
+        });
+        this.axiosHead++;
+        if (this.axiosHead > 1024) {
+            this.axiosHead = 0;
+        }
+        let currHead = this.axiosHead;
+
         axios.get(url)
             .then(response => {
+                if (currHead !== this.axiosHead) return;
                 this.setState({
                     prevHyperLink: response.data.previous,
                     nextHyperLink: response.data.next,
@@ -419,9 +432,14 @@ class App extends Component {
                 });
             })
             .catch(err => {
+                if (currHead !== this.axiosHead) return;
                 console.log(err);
             })
             .then(() => {
+                if (currHead !== this.axiosHead) return;
+                this.setState({
+                    loading: false,
+                });
             });
     }
 
@@ -667,15 +685,25 @@ class App extends Component {
                                     </div>
                                 </div>
 
-                                {this.renderTodolist()}
+                                <div style={{padding: '20px', display: this.state.loading ? 'block' : 'none'}}
+                                     align="center">
+                                    <BeatLoader
+                                        sizeUnit={"px"}
+                                        size={10}
+                                        color={'#F3969A'}
+                                        loading
+                                    />
+                                </div>
+                                <div style={{display: !this.state.loading ? 'block' : 'none'}}>
+                                    {this.renderTodolist()}
 
-                                <Modal isOpen={this.state.taskEditorModalOpen}
-                                       toggle={() => this.toggleTaskEditorModal()}
-                                       className={this.props.className}>
-                                    <ModalHeader toggle={() => this.toggleTaskEditorModal()}>
-                                        编辑任务
-                                    </ModalHeader>
-                                    <ModalBody>
+                                    <Modal isOpen={this.state.taskEditorModalOpen}
+                                           toggle={() => this.toggleTaskEditorModal()}
+                                           className={this.props.className}>
+                                        <ModalHeader toggle={() => this.toggleTaskEditorModal()}>
+                                            编辑任务
+                                        </ModalHeader>
+                                        <ModalBody>
                                         <textarea
                                             style={{marginBottom: '10px'}}
                                             className="form-control" rows="5" data-min-rows="5"
@@ -683,112 +711,113 @@ class App extends Component {
                                             onChange={(e) => {
                                                 this.updateTaskEditorInputValue(e)
                                             }}/>
-                                        <Button outline
-                                                className="white btn-inline"
-                                                size="sm"
-                                                onClick={() => this.toggleTaskEditorDatePickerModal()}>
+                                            <Button outline
+                                                    className="white btn-inline"
+                                                    size="sm"
+                                                    onClick={() => this.toggleTaskEditorDatePickerModal()}>
                                             <span><MdToday className="icon-line-aligning-patch"/>{" "}
                                                 {
                                                     (this.state.todoInEdit === null || this.state.todoInEdit === undefined || this.state.todoInEdit.expire_at < 0) ? "截止日期"
                                                         : (moment(new Date(new Date(this.state.todoInEdit.expire_at).getTime() + 8 * 3600 * 1000)).format('YYYY/M/D'))
                                                 }
                                             </span>
-                                        </Button>
-                                        {" "}
-                                        <Button
-                                            outline
-                                            size="sm"
-                                            className="white btn-inline"
-                                            onClick={() => this.toggleTaskEditorPriorityPickerModal()}>
-                                            {
-                                                (this.state.todoInEdit === null || this.state.todoInEdit === undefined || this.state.todoInEdit.priority === this.TODO_PRIORITY.ALL[0]) ?
-                                                    <span><MdPriorityHigh
-                                                        className="icon-line-aligning-patch"/> 优先级</span>
-                                                    : (
-                                                        this.renderPriorityBadge((this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.priority)
-                                                    )
-                                            }
-                                        </Button>
-                                        {" "}
-                                        <Button
-                                            outline
-                                            size="sm"
-                                            className="white btn-inline float-right"
-                                            onClick={(e) => this.handleSaveInEditTodo(e)}>
-                                            <MdSave className="icon-line-aligning-patch"/> 保存
-                                        </Button>
-                                        <Modal size="sm" isOpen={this.state.taskEditorDatePickerModalOpen}
-                                               toggle={() => this.toggleTaskEditorDatePickerModal()}
-                                               className={this.props.className}>
-                                            <ModalHeader toggle={() => this.toggleTaskEditorDatePickerModal()}>
-                                                截止日期
-                                            </ModalHeader>
-                                            <ModalBody>
-                                                <DayPicker
-                                                    todayButton="回到当前月份"
-                                                    selectedDays={(this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.expire_at > 0 ? new Date(new Date(this.state.todoInEdit.expire_at).getTime() + 8 * 3600 * 1000) : null}
-                                                    onDayClick={(day) => this.handleTaskEditorDaySelection(day)}
-                                                />
-                                            </ModalBody>
-                                        </Modal>
-                                        <Modal size="sm" isOpen={this.state.taskEditorPriorityPickerModalOpen}
-                                               toggle={() => this.toggleTaskEditorPriorityPickerModal()}
-                                               className={this.props.className}>
-                                            <ModalHeader toggle={() => this.toggleTaskEditorPriorityPickerModal()}>
-                                                优先级
-                                            </ModalHeader>
-                                            <ModalBody>
-                                                <ListGroup flush className="lp-list-group">
-                                                    <ListGroupItem
-                                                        onClick={(e) => this.updateTaskEditorPrioritySelection(e, this.TODO_PRIORITY.URGENT)}
-                                                        className={"text-danger drawer-item" + ((this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.priority === this.TODO_PRIORITY.URGENT[0] ? " active" : "")}
-                                                        tag="a" href="" action>
-                                                        <div className="text-danger icon-item">
-                                                            <MdLooksOne/>
-                                                        </div>
-                                                        <span>{this.TODO_PRIORITY.URGENT[1]}</span>
-                                                    </ListGroupItem>
-                                                    <ListGroupItem
-                                                        onClick={(e) => this.updateTaskEditorPrioritySelection(e, this.TODO_PRIORITY.IMPORTANT)}
-                                                        className={"text-info drawer-item" + ((this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.priority === this.TODO_PRIORITY.IMPORTANT[0] ? " active" : "")}
-                                                        tag="a" href="" action>
-                                                        <div className="text-info icon-item">
-                                                            <MdLooksTwo/>
-                                                        </div>
-                                                        <span>{this.TODO_PRIORITY.IMPORTANT[1]}</span>
-                                                    </ListGroupItem>
-                                                    <ListGroupItem
-                                                        onClick={(e) => this.updateTaskEditorPrioritySelection(e, this.TODO_PRIORITY.NORMAL)}
-                                                        className={"text-success drawer-item" + ((this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.priority === this.TODO_PRIORITY.NORMAL[0] ? " active" : "")}
-                                                        tag="a" href="" action>
-                                                        <div className="text-success icon-item">
-                                                            <MdLooks3/>
-                                                        </div>
-                                                        <span>{this.TODO_PRIORITY.NORMAL[1]}</span>
-                                                    </ListGroupItem>
-                                                </ListGroup>
-                                            </ModalBody>
-                                        </Modal>
+                                            </Button>
+                                            {" "}
+                                            <Button
+                                                outline
+                                                size="sm"
+                                                className="white btn-inline"
+                                                onClick={() => this.toggleTaskEditorPriorityPickerModal()}>
+                                                {
+                                                    (this.state.todoInEdit === null || this.state.todoInEdit === undefined || this.state.todoInEdit.priority === this.TODO_PRIORITY.ALL[0]) ?
+                                                        <span><MdPriorityHigh
+                                                            className="icon-line-aligning-patch"/> 优先级</span>
+                                                        : (
+                                                            this.renderPriorityBadge((this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.priority)
+                                                        )
+                                                }
+                                            </Button>
+                                            {" "}
+                                            <Button
+                                                outline
+                                                size="sm"
+                                                className="white btn-inline float-right"
+                                                onClick={(e) => this.handleSaveInEditTodo(e)}>
+                                                <MdSave className="icon-line-aligning-patch"/> 保存
+                                            </Button>
+                                            <Modal size="sm" isOpen={this.state.taskEditorDatePickerModalOpen}
+                                                   toggle={() => this.toggleTaskEditorDatePickerModal()}
+                                                   className={this.props.className}>
+                                                <ModalHeader toggle={() => this.toggleTaskEditorDatePickerModal()}>
+                                                    截止日期
+                                                </ModalHeader>
+                                                <ModalBody>
+                                                    <DayPicker
+                                                        todayButton="回到当前月份"
+                                                        selectedDays={(this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.expire_at > 0 ? new Date(new Date(this.state.todoInEdit.expire_at).getTime() + 8 * 3600 * 1000) : null}
+                                                        onDayClick={(day) => this.handleTaskEditorDaySelection(day)}
+                                                    />
+                                                </ModalBody>
+                                            </Modal>
+                                            <Modal size="sm" isOpen={this.state.taskEditorPriorityPickerModalOpen}
+                                                   toggle={() => this.toggleTaskEditorPriorityPickerModal()}
+                                                   className={this.props.className}>
+                                                <ModalHeader toggle={() => this.toggleTaskEditorPriorityPickerModal()}>
+                                                    优先级
+                                                </ModalHeader>
+                                                <ModalBody>
+                                                    <ListGroup flush className="lp-list-group">
+                                                        <ListGroupItem
+                                                            onClick={(e) => this.updateTaskEditorPrioritySelection(e, this.TODO_PRIORITY.URGENT)}
+                                                            className={"text-danger drawer-item" + ((this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.priority === this.TODO_PRIORITY.URGENT[0] ? " active" : "")}
+                                                            tag="a" href="" action>
+                                                            <div className="text-danger icon-item">
+                                                                <MdLooksOne/>
+                                                            </div>
+                                                            <span>{this.TODO_PRIORITY.URGENT[1]}</span>
+                                                        </ListGroupItem>
+                                                        <ListGroupItem
+                                                            onClick={(e) => this.updateTaskEditorPrioritySelection(e, this.TODO_PRIORITY.IMPORTANT)}
+                                                            className={"text-info drawer-item" + ((this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.priority === this.TODO_PRIORITY.IMPORTANT[0] ? " active" : "")}
+                                                            tag="a" href="" action>
+                                                            <div className="text-info icon-item">
+                                                                <MdLooksTwo/>
+                                                            </div>
+                                                            <span>{this.TODO_PRIORITY.IMPORTANT[1]}</span>
+                                                        </ListGroupItem>
+                                                        <ListGroupItem
+                                                            onClick={(e) => this.updateTaskEditorPrioritySelection(e, this.TODO_PRIORITY.NORMAL)}
+                                                            className={"text-success drawer-item" + ((this.state.todoInEdit !== null && this.state.todoInEdit !== undefined) && this.state.todoInEdit.priority === this.TODO_PRIORITY.NORMAL[0] ? " active" : "")}
+                                                            tag="a" href="" action>
+                                                            <div className="text-success icon-item">
+                                                                <MdLooks3/>
+                                                            </div>
+                                                            <span>{this.TODO_PRIORITY.NORMAL[1]}</span>
+                                                        </ListGroupItem>
+                                                    </ListGroup>
+                                                </ModalBody>
+                                            </Modal>
 
-                                    </ModalBody>
-                                </Modal>
-                                <br/>
-                                <div className="center">
-                                    <a onClick={(e) => this.handlePrevPage(e)}
-                                       className="btn btn-inline"
-                                       style={{display: (this.state.prevHyperLink === null || this.state.prevHyperLink === undefined) ? "none" : "inline"}}><MdChevronLeft
-                                        className="icon-line-aligning-patch"/> 上一页</a>
-                                    <a onClick={(e) => this.handleNextPage(e)}
-                                       className="btn btn-inline"
-                                       style={{display: (this.state.nextHyperLink === null || this.state.nextHyperLink === undefined) ? "none" : "inline"}}>下一页 <MdChevronRight
-                                        className="icon-line-aligning-patch"/></a>
-                                    <span>
+                                        </ModalBody>
+                                    </Modal>
+                                    <br/>
+                                    <div className="center">
+                                        <a onClick={(e) => this.handlePrevPage(e)}
+                                           className="btn btn-inline"
+                                           style={{display: (this.state.prevHyperLink === null || this.state.prevHyperLink === undefined) ? "none" : "inline"}}><MdChevronLeft
+                                            className="icon-line-aligning-patch"/> 上一页</a>
+                                        <a onClick={(e) => this.handleNextPage(e)}
+                                           className="btn btn-inline"
+                                           style={{display: (this.state.nextHyperLink === null || this.state.nextHyperLink === undefined) ? "none" : "inline"}}>下一页 <MdChevronRight
+                                            className="icon-line-aligning-patch"/></a>
+                                        <span>
                                     {
                                         ((this.state.prevHyperLink === null || this.state.prevHyperLink === undefined)
                                             && (this.state.nextHyperLink === null || this.state.nextHyperLink === undefined)) ? (
                                             <small>已显示当前筛选条件下全部任务</small>) : ""
                                     }
                                     </span>
+                                    </div>
                                 </div>
                             </div>
                         </Col>
