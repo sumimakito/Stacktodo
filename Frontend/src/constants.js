@@ -1,0 +1,1 @@
+export const API_BASE_URL = 'https://stacktodo-api.mak1t0.cc/v1';
